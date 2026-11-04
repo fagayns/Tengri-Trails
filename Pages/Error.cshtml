@@ -1,0 +1,14 @@
+@page "/Error"
+@model TengriTrails.Pages.ErrorModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "";
+    ViewData["Title"] = T.Get("error.title", Model.Language);
+}
+<section class="error-page">
+    <p class="eyebrow"><span></span>TENGRI TRAILS</p>
+    <h1>@T.Get("error.title", Model.Language)</h1>
+    <p>@T.Get("error.copy", Model.Language)</p>
+    <a class="button button-forest" href="/@Model.Language">@T.Get("error.home", Model.Language)<span aria-hidden="true">↗</span></a>
+</section>

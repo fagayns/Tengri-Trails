@@ -1,0 +1,143 @@
+@page "/{lang}/tours"
+@model TengriTrails.Pages.Tours.IndexModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "/tours";
+    ViewData["Title"] = T.Get("tours.title", Model.Language);
+}
+<section class="page-hero tours-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get("tours.eyebrow", Model.Language)</p>
+        <h1>@T.Get("tours.heading", Model.Language)</h1>
+        <p>@T.Get("tours.intro", Model.Language)</p>
+    </div>
+</section>
+<section class="section catalog-section">
+    <div class="catalog-layout">
+        <form class="catalog-filters" method="get">
+            <label class="filter-search">
+                <span>@T.Get("search.query_label", Model.Language)</span>
+                <input type="search" name="query" value="@Model.Query" placeholder="@T.Get("search.placeholder", Model.Language)" />
+            </label>
+            <div class="filter-fields">
+                <label class="filter-field">
+                    <span>@T.Get("filter.region", Model.Language)</span>
+                    <select name="region">
+                        <option value="">@T.Get("search.all_regions", Model.Language)</option>
+                        @foreach (var region in Model.Regions)
+                        {
+                            <option value="@region.Value" selected="@(Model.Region == region.Value)">@T.Get(region.Key, Model.Language)</option>
+                        }
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>@T.Get("filter.type", Model.Language)</span>
+                    <select name="type">
+                        <option value="">@T.Get("filter.any_type", Model.Language)</option>
+                        @foreach (var type in Model.Types)
+                        {
+                            <option value="@type.Value" selected="@(Model.Type == type.Value)">@T.Get(type.Key, Model.Language)</option>
+                        }
+                    </select>
+                </label>
+                <fieldset class="filter-field filter-date-range">
+                    <legend>@T.Get("filter.dates", Model.Language)</legend>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.date_from", Model.Language)</span>
+                        <input type="date" name="dateFrom" value="@Model.DateFrom" aria-label="@T.Get("filter.date_from", Model.Language)" />
+                    </label>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.date_to", Model.Language)</span>
+                        <input type="date" name="dateTo" value="@Model.DateTo" aria-label="@T.Get("filter.date_to", Model.Language)" />
+                    </label>
+                </fieldset>
+                <fieldset class="filter-field filter-number-range">
+                    <legend>@T.Get("filter.duration", Model.Language)</legend>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.minimum", Model.Language)</span>
+                        <input type="number" name="minDays" min="1" value="@Model.MinDays" placeholder="@T.Get("filter.minimum", Model.Language)" aria-label="@T.Get("filter.minimum", Model.Language)" />
+                    </label>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.maximum", Model.Language)</span>
+                        <input type="number" name="maxDays" min="1" value="@Model.MaxDays" placeholder="@T.Get("filter.maximum", Model.Language)" aria-label="@T.Get("filter.maximum", Model.Language)" />
+                    </label>
+                </fieldset>
+                <fieldset class="filter-field filter-number-range">
+                    <legend>@T.Get("filter.price", Model.Language)</legend>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.minimum", Model.Language)</span>
+                        <input type="number" name="minPrice" min="1" step="1000" value="@Model.MinPrice" placeholder="@T.Get("filter.minimum", Model.Language)" aria-label="@T.Get("filter.minimum", Model.Language)" />
+                    </label>
+                    <label>
+                        <span class="sr-only">@T.Get("filter.maximum", Model.Language)</span>
+                        <input type="number" name="maxPrice" min="1" step="1000" value="@Model.MaxPrice" placeholder="@T.Get("filter.maximum", Model.Language)" aria-label="@T.Get("filter.maximum", Model.Language)" />
+                    </label>
+                </fieldset>
+                <label class="filter-field">
+                    <span>@T.Get("filter.difficulty", Model.Language)</span>
+                    <select name="difficulty">
+                        <option value="">@T.Get("filter.any_difficulty", Model.Language)</option>
+                        @foreach (var difficulty in Model.Difficulties)
+                        {
+                            <option value="@difficulty.Value" selected="@(Model.Difficulty == difficulty.Value)">@T.Get(difficulty.Key, Model.Language)</option>
+                        }
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>@T.Get("filter.sort", Model.Language)</span>
+                    <select name="sort">
+                        <option value="date" selected="@(Model.Sort == "date")">@T.Get("filter.sort_date", Model.Language)</option>
+                        <option value="price" selected="@(Model.Sort == "price")">@T.Get("filter.sort_price", Model.Language)</option>
+                    </select>
+                </label>
+            </div>
+            <button class="button button-forest filter-submit" type="submit">@T.Get("search.filter", Model.Language)<span aria-hidden="true">↗</span></button>
+            <a class="filter-reset" href="/@Model.Language/tours">@T.Get("tours.reset", Model.Language)</a>
+        </form>
+        <div class="catalog-results">
+            <div class="catalog-meta">
+                <h2>@T.Get("tours.collection", Model.Language)</h2>
+                <p>@T.Get("tours.count", Model.Language, Model.Results.Count)</p>
+            </div>
+            @if (Model.Results.Count > 0)
+            {
+                <div class="tour-grid catalog-grid">
+                    @foreach (var tour in Model.Results)
+                    {
+                        <a class="tour-card catalog-tour-card" href="/@Model.Language/tours/@tour.Slug">
+                            <div class="tour-image-wrap">
+                                <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" />
+                                <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
+                                <span class="image-arrow" aria-hidden="true">↗</span>
+                            </div>
+                            <div class="catalog-card-info">
+                                <p class="catalog-card-type">@T.Get($"tour.type.{tour.Type}", Model.Language)</p>
+                                <h3>@T.Get(tour.NameKey, Model.Language)</h3>
+                                <div class="catalog-card-facts">
+                                    <span><b>@T.Get("tour.next_departure", Model.Language)</b>@Model.FormatDate(tour.Departure)</span>
+                                    <span><b>@T.Get("detail.duration", Model.Language)</b>@T.Get("tour.days", Model.Language, tour.Days)</span>
+                                    <span><b>@T.Get("filter.difficulty", Model.Language)</b>@T.Get($"difficulty.{tour.Difficulty}", Model.Language)</span>
+                                </div>
+                                <div class="catalog-card-price">
+                                    <span>@T.Get("tour.from", Model.Language) <strong>@Model.FormatPrice(tour.Price)</strong></span>
+                                    <small>@Model.FormatReferencePrices(tour.Price)</small>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <span aria-hidden="true">⌖</span>
+                    <h3>@T.Get("tours.empty_title", Model.Language)</h3>
+                    <p>@T.Get("tours.empty_copy", Model.Language)</p>
+                    <a class="button button-forest" href="/@Model.Language/tours">@T.Get("tours.reset", Model.Language)<span aria-hidden="true">↗</span></a>
+                </div>
+            }
+        </div>
+    </div>
+</section>

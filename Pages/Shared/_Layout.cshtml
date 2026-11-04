@@ -1,0 +1,61 @@
+@inject ITextCatalog T
+@{
+    var language = (string?)ViewData["Language"] ?? "en";
+    var suffix = (string?)ViewData["LanguageSuffix"] ?? "";
+    var languages = new[] { ("ky", "KG"), ("ru", "RU"), ("en", "EN"), ("es", "ES"), ("fr", "FR"), ("zh", "中文") };
+}
+<!DOCTYPE html>
+<html lang="@language">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F7F9F6" />
+    <title>@ViewData["Title"] · Tengri Trails</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="/@language" aria-label="Tengri Trails — @T.Get("nav.home", language)">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 42 36"><path d="M2 32 15 9l8 13 5-8 12 18H2Z" /><path d="m8 32 12-17 13 17" /></svg>
+                </span>
+                <span class="brand-name">TENGRI <b>TRAILS</b></span>
+            </a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-label="@T.Get("nav.open_menu", language)">
+                <span></span><span></span>
+            </button>
+            <nav class="main-nav" aria-label="@T.Get("nav.main", language)">
+                <a href="/@language">@T.Get("nav.home", language)</a>
+                <a href="/@language/tours">@T.Get("nav.tours", language)</a>
+                <div class="language-switcher" aria-label="@T.Get("nav.language", language)">
+                    @foreach (var (code, label) in languages)
+                    {
+                        <a class="language-link @(language == code ? "is-active" : "")"
+                           href="/@(code + suffix)" lang="@code" hreflang="@code"
+                           aria-label="@T.Get($"language.{code}", language)" aria-current="@(language == code ? "page" : null)">@label</a>
+                    }
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <a class="brand footer-brand" href="/@language">
+                <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 42 36"><path d="M2 32 15 9l8 13 5-8 12 18H2Z" /><path d="m8 32 12-17 13 17" /></svg></span>
+                <span class="brand-name">TENGRI <b>TRAILS</b></span>
+            </a>
+            <p>@T.Get("footer.note", language)</p>
+            <span>© 2026 Tengri Trails</span>
+        </div>
+    </footer>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

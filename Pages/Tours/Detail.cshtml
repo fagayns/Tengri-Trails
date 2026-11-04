@@ -1,0 +1,39 @@
+@page "/{lang}/tours/{slug}"
+@model TengriTrails.Pages.Tours.DetailModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = $"/tours/{Model.Tour.Slug}";
+    ViewData["Title"] = T.Get(Model.Tour.NameKey, Model.Language);
+}
+<article class="tour-detail">
+    <section class="detail-cover" style="--cover-image: url('@Model.Tour.ImageUrl')">
+        <div class="detail-cover-shade"></div>
+        <div class="detail-cover-content">
+            <a class="back-link" href="/@Model.Language/tours"><span aria-hidden="true">←</span>@T.Get("detail.back", Model.Language)</a>
+            <p class="eyebrow eyebrow-light"><span></span>@T.Get(Model.Tour.RegionKey, Model.Language)</p>
+            <h1>@T.Get(Model.Tour.NameKey, Model.Language)</h1>
+            <p>@T.Get("tour.days", Model.Language, Model.Tour.Days) <i>·</i> @T.Get("detail.small_group", Model.Language)</p>
+        </div>
+        <span class="detail-coordinates">@T.Get("detail.coordinates", Model.Language)</span>
+    </section>
+    <section class="detail-body">
+        <div class="detail-copy">
+            <p class="eyebrow"><span></span>@T.Get("detail.about_eyebrow", Model.Language)</p>
+            <h2>@T.Get("detail.about_title", Model.Language)</h2>
+            <p class="detail-description">@T.Get(Model.Tour.DescriptionKey, Model.Language)</p>
+            <div class="detail-facts">
+                <div><span>@T.Get("detail.duration", Model.Language)</span><strong>@T.Get("tour.days", Model.Language, Model.Tour.Days)</strong></div>
+                <div><span>@T.Get("detail.next_departure", Model.Language)</span><strong>@Model.FormatDate(Model.Tour.Departure)</strong></div>
+                <div><span>@T.Get("detail.group_size", Model.Language)</span><strong>@T.Get("detail.group_value", Model.Language)</strong></div>
+            </div>
+        </div>
+        <aside class="booking-card">
+            <p>@T.Get("tour.from", Model.Language)</p>
+            <strong class="booking-price">@Model.FormatPrice(Model.Tour.Price)</strong>
+            <span class="booking-note">@T.Get("detail.per_person", Model.Language)</span>
+            <a class="button button-accent booking-button" href="mailto:hello@tengritrails.com?subject=@Uri.EscapeDataString(T.Get(Model.Tour.NameKey, Model.Language))">@T.Get("booking.book", Model.Language)<span aria-hidden="true">↗</span></a>
+            <p class="booking-small">@T.Get("detail.booking_note", Model.Language)</p>
+        </aside>
+    </section>
+</article>
