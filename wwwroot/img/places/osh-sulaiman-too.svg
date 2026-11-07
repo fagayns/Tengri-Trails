@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Sulaiman-Too above Osh</title>
+  <desc id="desc">The sacred mountain rising above the rooftops of Osh.</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7FB8D8"/><stop offset="1" stop-color="#F2D9B9"/></linearGradient></defs>
+  <path fill="url(#sky)" d="M0 0h1200v760H0z"/>
+  <circle cx="950" cy="140" r="68" fill="#F2B36E"/>
+  <path fill="#8C8B77" d="M80 565q85-205 210-202 95 4 175-110 78-111 168-93 120 24 171 169 66 186 182 236H80z"/>
+  <path fill="#A8A18A" d="M460 366q98-178 173-162 92 20 154 170-110-70-173-54-72 17-154 46z"/>
+  <path fill="#2F5D50" d="M0 570h1200v190H0z"/>
+  <g fill="#D9C9A3" stroke="#2F5D50" stroke-width="7">
+    <path d="M70 610h125v100H70z"/><path d="M220 585h150v125H220z"/><path d="M400 620h115v90H400z"/>
+    <path d="M720 605h145v105H720z"/><path d="M895 580h170v130H895z"/><path d="M1085 625h115v85h-115z"/>
+  </g>
+  <g fill="#7FB8D8"><path d="M110 640h35v45h-35zm150-20h40v52h-40zm85 20h40v40h-40zm420-4h42v50h-42zm180-30h45v60h-45zm165 37h35v44h-35z"/></g>
+  <path fill="#E07A3F" d="M0 710h1200v50H0z"/>
+</svg>

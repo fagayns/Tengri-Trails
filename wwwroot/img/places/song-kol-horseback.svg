@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Song-Kol Lake and yurts</title>
+  <desc id="desc">A high mountain lake with yurts beneath the peaks.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7FB8D8"/><stop offset="1" stop-color="#D9E8D7"/></linearGradient>
+    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#5BA9B1"/><stop offset="1" stop-color="#2F5D50"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v760H0z"/>
+  <circle cx="950" cy="145" r="65" fill="#F7F9F6" opacity=".8"/>
+  <path fill="#688A7D" d="m0 405 215 145 185-220 200 200 175-235 220 205 205-185v265H0z"/>
+  <path fill="#F7F9F6" opacity=".8" d="m400 330 48 57-48-18-48 21zm375-35 45 63-45-21-46 22zm425 45-62 63 17-49z"/>
+  <path fill="url(#water)" d="M0 490q210-45 410 0t390 0 400 0v270H0z"/>
+  <path fill="#D9C9A3" d="M0 585q210-30 410 0t390 0 400 0v175H0z"/>
+  <path fill="#2F5D50" d="M0 665q210-40 410 0t390 0 400 0v95H0z"/>
+  <g fill="#F7F9F6" stroke="#2F5D50" stroke-width="8">
+    <path d="M190 574q64-102 128 0z"/><path d="M350 598q48-75 96 0z"/><path d="M860 576q60-96 120 0z"/>
+  </g>
+  <g fill="none" stroke="#2F5D50" stroke-width="5"><path d="M254 575v-32m144 54v-24m522 4v-32"/></g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Issyk-Kul shoreline</title>
+  <desc id="desc">The blue lake shore with distant mountains and a sandy beach.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7FB8D8"/><stop offset="1" stop-color="#F7F9F6"/></linearGradient>
+    <linearGradient id="lake" x2="0" y2="1"><stop stop-color="#4F9FB2"/><stop offset="1" stop-color="#2F5D70"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v760H0z"/>
+  <circle cx="960" cy="145" r="60" fill="#F7F9F6" opacity=".9"/>
+  <path fill="#7D9B91" d="m0 405 215-185 185 157 185-225 235 220 155-180 225 193v90H0z"/>
+  <path fill="#F7F9F6" d="m585 152 58 75-58-24-54 21zm390 40 56 60-55-20-45 22z"/>
+  <path fill="url(#lake)" d="M0 410h1200v260q-185-35-360 0t-395 0-445 0z"/>
+  <path fill="#D9C9A3" d="M0 606q170-62 345-8 168 52 340 9 180-46 515 11v142H0z"/>
+  <path fill="#2F5D50" opacity=".75" d="M0 650q190-40 360 5t340 0 500-4v109H0z"/>
+  <g fill="#F7F9F6" opacity=".56"><path d="M170 485h210v7H170zm430 69h260v7H600zm220-92h180v6H820z"/></g>
+</svg>

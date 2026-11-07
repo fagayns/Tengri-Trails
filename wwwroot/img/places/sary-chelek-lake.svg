@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Sary-Chelek turquoise lake</title>
+  <desc id="desc">A turquoise lake surrounded by dense green forest.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7FB8D8"/><stop offset="1" stop-color="#D9E8D7"/></linearGradient>
+    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#76D1C4"/><stop offset="1" stop-color="#368C83"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v760H0z"/>
+  <path fill="#6B9280" d="m0 350 170-205 165 186 175-220 180 230 180-215 160 205 170-190v290H0z"/>
+  <path fill="#F7F9F6" opacity=".85" d="m510 111 70 93-67-28-42 32-37-26zm340 7 62 77-60-23-40 25z"/>
+  <path fill="#2F5D50" d="M0 330h1200v430H0z"/>
+  <path fill="#477A5B" d="M0 375q130-120 255 0t250 0 250 0 250 0 195-30v415H0z"/>
+  <path fill="url(#water)" d="M0 478q180-85 350-10t350 10 280-20 220 4v298H0z"/>
+  <path fill="#D9C9A3" d="M0 700q185-38 350 0t350 0 280 0 220 0v60H0z"/>
+  <g fill="#2F5D50">
+    <path d="m110 500 52-125 52 125h-30l43 75H96l43-75z"/><path d="m280 480 48-112 47 112h-27l39 67h-120l40-67z"/>
+    <path d="m900 483 54-130 55 130h-32l44 76H886l45-76z"/><path d="m1050 510 42-101 42 101h-25l35 61h-104l35-61z"/>
+  </g>
+</svg>
