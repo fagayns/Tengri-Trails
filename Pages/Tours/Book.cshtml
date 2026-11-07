@@ -1,0 +1,118 @@
+@page "/{lang}/tours/{slug}/book"
+@model TengriTrails.Pages.Tours.BookModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = $"/tours/{Model.Tour.Slug}/book";
+    ViewData["Title"] = T.Get("booking.title", Model.Language);
+    var selectedDeparture = Model.Departures.FirstOrDefault(departure => departure.Id == Model.DepartureId);
+}
+<section class="page-hero booking-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <a class="back-link" href="/@Model.Language/tours/@Model.Tour.Slug"><span aria-hidden="true">←</span>@T.Get("booking.back_to_tour", Model.Language)</a>
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get(Model.Tour.RegionKey, Model.Language)</p>
+        <h1>@T.Get("booking.title", Model.Language)</h1>
+        <p>@T.Get(Model.Tour.NameKey, Model.Language)</p>
+    </div>
+</section>
+<section class="section booking-page-section">
+    <form method="post" class="booking-form" data-booking-form data-unit-price="@Model.Tour.Price" data-locale="@Model.Language" novalidate>
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="booking-fields">
+            <section class="booking-form-section">
+                <h2>@T.Get("booking.contact_heading", Model.Language)</h2>
+                <div class="booking-form-grid">
+                    <label class="form-field form-field-wide">
+                        <span>@T.Get("booking.departure", Model.Language)<b>*</b></span>
+                        <select id="DepartureId" name="DepartureId" required>
+                            <option value="" selected="@(Model.DepartureId is null)">@T.Get("booking.choose_departure", Model.Language)</option>
+                            @foreach (var departure in Model.Departures)
+                            {
+                                var seats = Model.RemainingSeats(departure.Id);
+                                if (seats > 0)
+                                {
+                                    <option value="@departure.Id" data-summary-date="@Model.FormatDate(departure.Date)" selected="@(Model.DepartureId == departure.Id)">@Model.FormatDate(departure.Date) · @departure.Time · @T.Get(departure.MeetingPlaceKey, Model.Language) · @T.Get("detail.seats_left", Model.Language, seats)</option>
+                                }
+                                else
+                                {
+                                    <option value="@departure.Id" disabled selected="@(Model.DepartureId == departure.Id)">@Model.FormatDate(departure.Date) · @T.Get("detail.sold_out", Model.Language)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="DepartureId" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.adults", Model.Language)<b>*</b></span>
+                        <input asp-for="Adults" type="number" min="1" max="@Model.Tour.MaximumGroupSize" required data-guest-count />
+                        <span asp-validation-for="Adults" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.children", Model.Language)</span>
+                        <input asp-for="Children" type="number" min="0" max="@Model.Tour.MaximumGroupSize" data-guest-count />
+                        <span asp-validation-for="Children" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.first_name", Model.Language)<b>*</b></span>
+                        <input asp-for="FirstName" autocomplete="given-name" maxlength="80" required />
+                        <span asp-validation-for="FirstName" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.last_name", Model.Language)<b>*</b></span>
+                        <input asp-for="LastName" autocomplete="family-name" maxlength="80" required />
+                        <span asp-validation-for="LastName" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.email", Model.Language)<b>*</b></span>
+                        <input asp-for="Email" type="email" autocomplete="email" maxlength="254" required />
+                        <span asp-validation-for="Email" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.phone", Model.Language)<b>*</b></span>
+                        <input asp-for="Phone" type="tel" autocomplete="tel" placeholder="+996 555 123 456" maxlength="24" required />
+                        <span asp-validation-for="Phone" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.citizenship", Model.Language)<b>*</b></span>
+                        <input asp-for="Citizenship" autocomplete="country-name" maxlength="80" required />
+                        <span asp-validation-for="Citizenship" class="field-error"></span>
+                    </label>
+                    <label class="form-field">
+                        <span>@T.Get("booking.messenger", Model.Language)<b>*</b></span>
+                        <select asp-for="Messenger" required>
+                            <option value="">@T.Get("booking.choose_messenger", Model.Language)</option>
+                            @foreach (var messenger in Model.MessengerChoices)
+                            {
+                                <option value="@messenger">@T.Get($"booking.messenger.{messenger}", Model.Language)</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Messenger" class="field-error"></span>
+                    </label>
+                    <label class="form-field form-field-wide">
+                        <span>@T.Get("booking.comment", Model.Language)</span>
+                        <textarea asp-for="Comment" rows="4" maxlength="1000"></textarea>
+                        <span asp-validation-for="Comment" class="field-error"></span>
+                    </label>
+                    <label class="consent-field">
+                        <input asp-for="Consent" required />
+                        <span>@T.Get("booking.consent", Model.Language) <a href="/@Model.Language/privacy" target="_blank" rel="noopener">@T.Get("booking.privacy_link", Model.Language)</a><b>*</b></span>
+                    </label>
+                    <span asp-validation-for="Consent" class="field-error consent-error"></span>
+                </div>
+            </section>
+            <button type="submit" class="button button-accent booking-submit">@T.Get("booking.submit", Model.Language)<span aria-hidden="true">↗</span></button>
+        </div>
+
+        <aside class="booking-summary">
+            <img src="@Model.Tour.ImageUrl" alt="@T.Get(Model.Tour.NameKey, Model.Language)" />
+            <p class="eyebrow"><span></span>@T.Get("booking.summary", Model.Language)</p>
+            <h2>@T.Get(Model.Tour.NameKey, Model.Language)</h2>
+            <p class="booking-summary-region">@T.Get(Model.Tour.RegionKey, Model.Language) · @T.Get("tour.days", Model.Language, Model.Tour.Days)</p>
+            <div class="booking-summary-row"><span>@T.Get("booking.selected_date", Model.Language)</span><strong data-summary-date>@(selectedDeparture is null ? T.Get("booking.choose_departure", Model.Language) : Model.FormatDate(selectedDeparture.Date))</strong></div>
+            <div class="booking-summary-row"><span>@T.Get("booking.price_per_guest", Model.Language)</span><strong>@Model.FormatPrice(Model.Tour.Price)</strong></div>
+            <div class="booking-summary-row"><span>@T.Get("booking.guests", Model.Language)</span><strong data-summary-guests>@(Model.Adults + Model.Children)</strong></div>
+            <div class="booking-total"><span>@T.Get("booking.total", Model.Language)</span><strong data-booking-total data-currency="@T.Get("currency", Model.Language)">@Model.FormatPrice(Model.Tour.Price * Math.Max(0, Model.Adults + Model.Children))</strong></div>
+            <p class="booking-summary-note">@T.Get("booking.no_payment", Model.Language)</p>
+        </aside>
+    </form>
+</section>

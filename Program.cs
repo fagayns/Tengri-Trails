@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<ITextCatalog, JsonTextCatalog>();
 builder.Services.AddSingleton<TourCatalog>();
+builder.Services.AddSingleton<BookingService>();
 
 var app = builder.Build();
 

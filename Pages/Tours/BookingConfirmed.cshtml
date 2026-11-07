@@ -1,0 +1,23 @@
+@page "/{lang}/tours/{slug}/book/confirmed/{bookingNumber}"
+@model TengriTrails.Pages.Tours.BookingConfirmedModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = $"/tours/{Model.TourSlug}";
+    ViewData["Title"] = T.Get("booking.confirmed_title", Model.Language);
+}
+<section class="confirmation-page">
+    <div class="confirmation-card">
+        <span class="confirmation-check" aria-hidden="true">✓</span>
+        <p class="eyebrow"><span></span>@T.Get("booking.confirmed_eyebrow", Model.Language)</p>
+        <h1>@T.Get("booking.confirmed_title", Model.Language)</h1>
+        <p>@T.Get("booking.confirmed_copy", Model.Language)</p>
+        <div class="confirmation-number">
+            <span>@T.Get("booking.number", Model.Language)</span>
+            <strong>@Model.BookingNumber</strong>
+        </div>
+        <p class="confirmation-tour">@T.Get(Model.TourNameKey, Model.Language)</p>
+        <a class="button button-forest" href="/@Model.Language/tours/@Model.TourSlug">@T.Get("booking.back_to_tour", Model.Language)<span aria-hidden="true">↗</span></a>
+        <p class="booking-summary-note">@T.Get("booking.no_payment", Model.Language)</p>
+    </div>
+</section>

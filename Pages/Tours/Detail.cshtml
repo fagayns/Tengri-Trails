@@ -17,6 +17,34 @@
         </div>
         <span class="detail-coordinates">@T.Get("detail.coordinates", Model.Language)</span>
     </section>
+
+    <section class="tour-gallery section" aria-label="@T.Get("detail.gallery", Model.Language)">
+        <button class="gallery-main" type="button" data-gallery-open aria-label="@T.Get("detail.open_gallery", Model.Language)">
+            <img src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" data-gallery-current />
+            <span class="gallery-open-label">@T.Get("detail.open_gallery", Model.Language)<span aria-hidden="true">⤢</span></span>
+        </button>
+        <div class="gallery-thumbnails" role="group" aria-label="@T.Get("detail.gallery_thumbnails", Model.Language)">
+            @for (var index = 0; index < Model.Tour.GalleryImageUrls.Count; index++)
+            {
+                <button class="gallery-thumbnail @(index == 0 ? "is-active" : "")" type="button"
+                        data-gallery-thumbnail data-index="@index" data-src="@Model.Tour.GalleryImageUrls[index]"
+                        aria-label="@T.Get("detail.gallery_photo", Model.Language, index + 1)" aria-current="@(index == 0 ? "true" : null)">
+                    <img src="@Model.Tour.GalleryImageUrls[index]" alt="" loading="lazy" />
+                </button>
+            }
+        </div>
+    </section>
+
+    <dialog class="gallery-dialog" data-gallery-dialog aria-label="@T.Get("detail.gallery", Model.Language)">
+        <div class="gallery-dialog-toolbar">
+            <span data-gallery-counter>1 / @Model.Tour.GalleryImageUrls.Count</span>
+            <button type="button" data-gallery-close aria-label="@T.Get("detail.close_gallery", Model.Language)">×</button>
+        </div>
+        <button class="gallery-dialog-arrow gallery-previous" type="button" data-gallery-previous aria-label="@T.Get("detail.previous_photo", Model.Language)">‹</button>
+        <img class="gallery-dialog-image" src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" data-gallery-dialog-image />
+        <button class="gallery-dialog-arrow gallery-next" type="button" data-gallery-next aria-label="@T.Get("detail.next_photo", Model.Language)">›</button>
+    </dialog>
+
     <section class="detail-body">
         <div class="detail-copy">
             <p class="eyebrow"><span></span>@T.Get("detail.about_eyebrow", Model.Language)</p>
@@ -24,16 +52,114 @@
             <p class="detail-description">@T.Get(Model.Tour.DescriptionKey, Model.Language)</p>
             <div class="detail-facts">
                 <div><span>@T.Get("detail.duration", Model.Language)</span><strong>@T.Get("tour.days", Model.Language, Model.Tour.Days)</strong></div>
-                <div><span>@T.Get("detail.next_departure", Model.Language)</span><strong>@Model.FormatDate(Model.Tour.Departure)</strong></div>
-                <div><span>@T.Get("detail.group_size", Model.Language)</span><strong>@T.Get("detail.group_value", Model.Language)</strong></div>
+                <div><span>@T.Get("detail.difficulty", Model.Language)</span><strong>@T.Get(Model.DifficultyLabelKey(Model.Difficulty), Model.Language)</strong></div>
+                <div><span>@T.Get("detail.group_size", Model.Language)</span><strong>@T.Get("detail.group_range", Model.Language, Model.Tour.MinimumGroupSize, Model.Tour.MaximumGroupSize)</strong></div>
             </div>
+
+            <section class="detail-section itinerary-section">
+                <p class="eyebrow"><span></span>@T.Get("detail.itinerary_eyebrow", Model.Language)</p>
+                <h2>@T.Get("detail.itinerary_title", Model.Language)</h2>
+                <ol class="itinerary-list">
+                    @foreach (var day in Model.Tour.Itinerary)
+                    {
+                        <li>
+                            <span class="itinerary-day">@T.Get("itinerary.day", Model.Language, day.Day)</span>
+                            <div><h3>@T.Get(day.DescriptionKey, Model.Language)</h3></div>
+                        </li>
+                    }
+                </ol>
+            </section>
+
+            <div class="included-grid">
+                <section class="detail-section">
+                    <p class="eyebrow"><span></span>@T.Get("detail.included", Model.Language)</p>
+                    <ul class="detail-list">
+                        @foreach (var item in Model.Tour.IncludedKeys)
+                        {
+                            <li>@T.Get(item, Model.Language)</li>
+                        }
+                    </ul>
+                </section>
+                <section class="detail-section">
+                    <p class="eyebrow"><span></span>@T.Get("detail.excluded", Model.Language)</p>
+                    <ul class="detail-list detail-list-excluded">
+                        @foreach (var item in Model.Tour.ExcludedKeys)
+                        {
+                            <li>@T.Get(item, Model.Language)</li>
+                        }
+                    </ul>
+                </section>
+            </div>
+
+            <section class="detail-section packing-section">
+                <p class="eyebrow"><span></span>@T.Get("detail.packing", Model.Language)</p>
+                <h2>@T.Get("detail.packing_title", Model.Language)</h2>
+                <ul class="packing-list">
+                    @foreach (var item in Model.Tour.PackingKeys)
+                    {
+                        <li>@T.Get(item, Model.Language)</li>
+                    }
+                </ul>
+            </section>
         </div>
-        <aside class="booking-card">
+
+        <aside class="booking-card departures-card">
             <p>@T.Get("tour.from", Model.Language)</p>
             <strong class="booking-price">@Model.FormatPrice(Model.Tour.Price)</strong>
             <span class="booking-note">@T.Get("detail.per_person", Model.Language)</span>
-            <a class="button button-accent booking-button" href="mailto:hello@tengritrails.com?subject=@Uri.EscapeDataString(T.Get(Model.Tour.NameKey, Model.Language))">@T.Get("booking.book", Model.Language)<span aria-hidden="true">↗</span></a>
+            <h2>@T.Get("detail.departures", Model.Language)</h2>
+            <div class="departure-list">
+                @foreach (var departure in Model.Departures)
+                {
+                    var remainingSeats = Model.RemainingSeats(departure.Id);
+                    <article class="departure-option">
+                        <div class="departure-date">@Model.FormatDate(departure.Date)</div>
+                        <div class="departure-meta">
+                            <span>@T.Get("detail.meeting", Model.Language): @Model.FormatCompactDate(departure.Date), @departure.Time</span>
+                            <span>@T.Get(departure.MeetingPlaceKey, Model.Language)</span>
+                            <span>@T.Get("detail.seats_left", Model.Language, remainingSeats)</span>
+                        </div>
+                        <strong class="departure-price">@Model.FormatPrice(Model.Tour.Price)</strong>
+                        @if (remainingSeats > 0)
+                        {
+                            <a class="button button-accent departure-book" href="/@Model.Language/tours/@Model.Tour.Slug/book?departureId=@Uri.EscapeDataString(departure.Id)">
+                                @T.Get("booking.book", Model.Language)<span aria-hidden="true">↗</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="departure-full">@T.Get("detail.sold_out", Model.Language)</span>
+                        }
+                    </article>
+                }
+            </div>
             <p class="booking-small">@T.Get("detail.booking_note", Model.Language)</p>
         </aside>
     </section>
+
+    @if (Model.RelatedTours.Count > 0)
+    {
+        <section class="section related-tours">
+            <div class="section-heading">
+                <div><p class="eyebrow"><span></span>@T.Get("detail.related_eyebrow", Model.Language)</p><h2>@T.Get("detail.related_title", Model.Language)</h2></div>
+                <a class="text-link" href="/@Model.Language/tours">@T.Get("detail.all_tours", Model.Language)<span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="tour-grid">
+                @foreach (var tour in Model.RelatedTours)
+                {
+                    <a class="tour-card" href="/@Model.Language/tours/@tour.Slug">
+                        <div class="tour-image-wrap">
+                            <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" />
+                            <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
+                            <span class="image-arrow" aria-hidden="true">↗</span>
+                        </div>
+                        <div class="tour-card-info">
+                            <div><h3>@T.Get(tour.NameKey, Model.Language)</h3><span>@T.Get("tour.days", Model.Language, tour.Days)</span></div>
+                            <p>@T.Get("tour.from", Model.Language) <strong>@Model.FormatPrice(tour.Price)</strong></p>
+                        </div>
+                    </a>
+                }
+            </div>
+        </section>
+    }
 </article>
