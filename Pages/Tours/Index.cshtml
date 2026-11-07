@@ -93,8 +93,10 @@
                     </select>
                 </label>
             </div>
-            <button class="button button-forest filter-submit" type="submit">@T.Get("search.filter", Model.Language)<span aria-hidden="true">↗</span></button>
-            <a class="filter-reset" href="/@Model.Language/tours">@T.Get("tours.reset", Model.Language)</a>
+            <div class="filter-actions">
+                <button class="button button-forest filter-submit" type="submit">@T.Get("search.filter", Model.Language)<span aria-hidden="true">↗</span></button>
+                <a class="filter-reset" href="/@Model.Language/tours">@T.Get("tours.reset", Model.Language)</a>
+            </div>
         </form>
         <div class="catalog-results">
             <div class="catalog-meta">
@@ -108,13 +110,13 @@
                     {
                         <a class="tour-card catalog-tour-card" href="/@Model.Language/tours/@tour.Slug">
                             <div class="tour-image-wrap">
-                                <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
-                                <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
+                                <img src="@tour.ImageUrl" alt="@tour.Name" loading="lazy" decoding="async" />
+                                <span class="tour-region">@tour.RegionName</span>
                                 <span class="image-arrow" aria-hidden="true">↗</span>
                             </div>
                             <div class="catalog-card-info">
                                 <p class="catalog-card-type">@T.Get($"tour.type.{tour.Type}", Model.Language)</p>
-                                <h3>@T.Get(tour.NameKey, Model.Language)</h3>
+                                <h3>@tour.Name</h3>
                                 <div class="catalog-card-facts">
                                     <span><b>@T.Get("tour.next_departure", Model.Language)</b>@Model.FormatDate(tour.Departure)</span>
                                     <span><b>@T.Get("detail.duration", Model.Language)</b>@T.Get("tour.days", Model.Language, tour.Days)</span>

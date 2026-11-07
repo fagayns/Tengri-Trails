@@ -9,9 +9,9 @@ namespace TengriTrails.Pages.Tours;
 public sealed class DetailModel(TourCatalog catalog, BookingService bookings, ITextCatalog text) : PageModel
 {
     public string Language { get; private set; } = "en";
-    public Tour Tour { get; private set; } = null!;
+    public CatalogTour Tour { get; private set; } = null!;
     public IReadOnlyList<TourDeparture> Departures { get; private set; } = [];
-    public IReadOnlyList<Tour> RelatedTours { get; private set; } = [];
+    public IReadOnlyList<CatalogTour> RelatedTours { get; private set; } = [];
     public int Difficulty => Tour.Difficulty;
 
     public IActionResult OnGet(string lang, string slug)
@@ -19,16 +19,16 @@ public sealed class DetailModel(TourCatalog catalog, BookingService bookings, IT
         if (lang is not ("ky" or "ru" or "en" or "es" or "fr" or "zh"))
             return NotFound();
 
-        var selectedTour = catalog.Find(slug);
+        var selectedTour = catalog.Find(slug, lang);
         if (selectedTour is null)
             return NotFound();
 
         Language = lang;
         Tour = selectedTour;
-        Departures = catalog.DeparturesFor(slug);
-        RelatedTours = catalog.All
+        Departures = catalog.DeparturesFor(slug, lang);
+        RelatedTours = catalog.All(lang)
             .Where(tour => tour.Slug != slug && tour.RegionKey == selectedTour.RegionKey)
-            .Concat(catalog.All.Where(tour => tour.Slug != slug && tour.RegionKey != selectedTour.RegionKey))
+            .Concat(catalog.All(lang).Where(tour => tour.Slug != slug && tour.RegionKey != selectedTour.RegionKey))
             .Take(3)
             .ToArray();
         return Page();
@@ -38,7 +38,7 @@ public sealed class DetailModel(TourCatalog catalog, BookingService bookings, IT
 
     public string DifficultyLabelKey(int difficulty) => $"difficulty.{difficulty}";
 
-    public string FormatPrice(int amount)
+    public string FormatPrice(decimal amount)
     {
         var culture = CultureInfo.GetCultureInfo(Language switch
         {

@@ -42,7 +42,7 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
     public IReadOnlyList<(string Key, string Value)> Regions => RegionOptions;
     public IReadOnlyList<(string Key, string Value)> Types => TypeOptions;
     public IReadOnlyList<(string Key, int Value)> Difficulties => DifficultyOptions;
-    public IReadOnlyList<Tour> Results { get; private set; } = [];
+    public IReadOnlyList<CatalogTour> Results { get; private set; } = [];
 
     public IActionResult OnGet(
         string lang,
@@ -76,8 +76,8 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
 
         var fromDate = ParseDateOnly(DateFrom);
         var toDate = ParseDateOnly(DateTo);
-        var filtered = catalog.All.Where(tour =>
-            (Region is null || tour.RegionKey == $"region.{Region.Replace('-', '_')}")
+        var filtered = catalog.All(Language).Where(tour =>
+            (Region is null || tour.RegionCode == Region)
             && (Type is null || tour.Type == Type)
             && (fromDate is null || DateOnly.FromDateTime(tour.Departure) >= fromDate)
             && (toDate is null || DateOnly.FromDateTime(tour.Departure) <= toDate)
@@ -87,8 +87,8 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
             && (MaxPrice is null || tour.Price <= MaxPrice)
             && (Difficulty is null || tour.Difficulty == Difficulty)
             && (Query is null
-                || text.Get(tour.NameKey, Language).Contains(Query, StringComparison.CurrentCultureIgnoreCase)
-                || text.Get(tour.RegionKey, Language).Contains(Query, StringComparison.CurrentCultureIgnoreCase)));
+                || tour.Name.Contains(Query, StringComparison.CurrentCultureIgnoreCase)
+                || tour.RegionName.Contains(Query, StringComparison.CurrentCultureIgnoreCase)));
 
         Results = (Sort == "price"
                 ? filtered.OrderBy(tour => tour.Price).ThenBy(tour => tour.Departure)
@@ -97,7 +97,7 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
         return Page();
     }
 
-    public string FormatPrice(int amount)
+    public string FormatPrice(decimal amount)
     {
         var cultureName = Language switch
         {
@@ -107,7 +107,7 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
         return $"{amount.ToString("N0", CultureInfo.GetCultureInfo(cultureName))} {text.Get("currency", Language)}";
     }
 
-    public string FormatReferencePrices(int amount) =>
+    public string FormatReferencePrices(decimal amount) =>
         text.Get("tour.reference_prices", Language, FormatUsd(amount), FormatEur(amount));
 
     public string FormatDate(DateTime date)
@@ -132,9 +132,9 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
             ? date
             : null;
 
-    private static string FormatUsd(int amount) => $"${amount / 87.5m:N0}";
+    private static string FormatUsd(decimal amount) => $"${amount / 87.5m:N0}";
 
-    private static string FormatEur(int amount) =>
+    private static string FormatEur(decimal amount) =>
         $"€{(amount / 95m).ToString("N0", CultureInfo.GetCultureInfo("en-US"))}";
 
     private static bool IsSupported(string? language) =>

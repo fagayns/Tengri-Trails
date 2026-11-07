@@ -109,16 +109,19 @@
         const guestInputs = [...bookingForm.querySelectorAll("[data-guest-count]")];
         const total = bookingForm.querySelector("[data-booking-total]");
         const guestSummary = bookingForm.querySelector("[data-summary-guests]");
+        const priceSummary = bookingForm.querySelector("[data-summary-price]");
         const departureSelect = bookingForm.querySelector('[name="DepartureId"]');
         const dateSummary = bookingForm.querySelector("[data-summary-date]");
-        const unitPrice = Number(bookingForm.dataset.unitPrice);
+        const baseUnitPrice = Number(bookingForm.dataset.unitPrice);
         const currency = total.dataset.currency;
         const locale = bookingForm.dataset.locale;
         const refreshSummary = () => {
             const guestCount = guestInputs.reduce((sum, input) => sum + Math.max(0, Number(input.value) || 0), 0);
+            const selectedOption = departureSelect.selectedOptions[0];
+            const unitPrice = Number(selectedOption?.dataset.unitPrice) || baseUnitPrice;
             guestSummary.textContent = String(guestCount);
             total.textContent = `${(unitPrice * guestCount).toLocaleString(locale)} ${currency}`;
-            const selectedOption = departureSelect.selectedOptions[0];
+            if (priceSummary) priceSummary.textContent = `${unitPrice.toLocaleString(locale)} ${currency}`;
             dateSummary.textContent = selectedOption?.dataset.summaryDate || selectedOption?.textContent || "";
         };
         guestInputs.forEach((input) => input.addEventListener("input", refreshSummary));

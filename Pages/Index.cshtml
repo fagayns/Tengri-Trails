@@ -62,12 +62,12 @@
         {
             <a class="tour-card" href="/@Model.Language/tours/@tour.Slug">
                 <div class="tour-image-wrap">
-                    <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
-                    <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
+                    <img src="@tour.ImageUrl" alt="@tour.Name" loading="lazy" decoding="async" />
+                    <span class="tour-region">@tour.RegionName</span>
                     <span class="image-arrow" aria-hidden="true">↗</span>
                 </div>
                 <div class="tour-card-info">
-                    <div><h3>@T.Get(tour.NameKey, Model.Language)</h3><span>@T.Get("tour.days", Model.Language, tour.Days)</span></div>
+                    <div><h3>@tour.Name</h3><span>@T.Get("tour.days", Model.Language, tour.Days)</span></div>
                     <p>@T.Get("tour.from", Model.Language) <strong>@Model.FormatPrice(tour.Price)</strong></p>
                 </div>
             </a>

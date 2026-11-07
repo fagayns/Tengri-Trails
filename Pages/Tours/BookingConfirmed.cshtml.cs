@@ -9,19 +9,19 @@ public sealed class BookingConfirmedModel(TourCatalog catalog, BookingService bo
     public string Language { get; private set; } = "en";
     public string BookingNumber { get; private set; } = "";
     public string TourSlug { get; private set; } = "";
-    public string TourNameKey { get; private set; } = "";
+    public string TourName { get; private set; } = "";
 
-    public IActionResult OnGet(string lang, string slug, string bookingNumber)
+    public async Task<IActionResult> OnGetAsync(string lang, string slug, string bookingNumber, CancellationToken cancellationToken)
     {
         if (lang is not ("ky" or "ru" or "en" or "es" or "fr" or "zh")
-            || catalog.Find(slug) is not { } tour
-            || !bookings.Exists(bookingNumber))
+            || catalog.Find(slug, lang) is not { } tour
+            || !await bookings.ExistsAsync(bookingNumber, cancellationToken))
             return NotFound();
 
         Language = lang;
         BookingNumber = bookingNumber;
         TourSlug = tour.Slug;
-        TourNameKey = tour.NameKey;
+        TourName = tour.Name;
         return Page();
     }
 }

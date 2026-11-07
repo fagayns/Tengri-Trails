@@ -18,7 +18,7 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
     ];
 
     public string Language { get; private set; } = "en";
-    public IReadOnlyList<Tour> PopularTours => catalog.All.Take(3).ToArray();
+    public IReadOnlyList<CatalogTour> PopularTours { get; private set; } = [];
     public IReadOnlyList<(string Key, string Value)> Regions => RegionOptions;
 
     public IActionResult OnGet(string lang)
@@ -27,10 +27,11 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
             return NotFound();
 
         Language = lang;
+        PopularTours = catalog.All(lang).Take(3).ToArray();
         return Page();
     }
 
-    public string FormatPrice(int amount)
+    public string FormatPrice(decimal amount)
     {
         var culture = CultureInfo.GetCultureInfo(Language switch
         {

@@ -46,7 +46,7 @@ public sealed class BookModel(TourCatalog catalog, BookingService bookings, ITex
     public bool Consent { get; set; }
 
     public string Language { get; private set; } = "en";
-    public Tour Tour { get; private set; } = null!;
+    public CatalogTour Tour { get; private set; } = null!;
     public IReadOnlyList<TourDeparture> Departures { get; private set; } = [];
     public IReadOnlyList<string> MessengerChoices => MessengerOptions;
 
@@ -63,7 +63,7 @@ public sealed class BookModel(TourCatalog catalog, BookingService bookings, ITex
         return Page();
     }
 
-    public IActionResult OnPost(string lang, string slug)
+    public async Task<IActionResult> OnPostAsync(string lang, string slug, CancellationToken cancellationToken)
     {
         if (!SetPageData(lang, slug))
             return NotFound();
@@ -82,7 +82,21 @@ public sealed class BookModel(TourCatalog catalog, BookingService bookings, ITex
         if (!ModelState.IsValid)
             return Page();
 
-        if (!bookings.TryBook(departure!.Id, Adults + Children, out var bookingNumber))
+        var bookingNumber = await bookings.CreateBookingAsync(
+            departure!.Id,
+            Adults,
+            Children,
+            FirstName!,
+            LastName!,
+            Email!,
+            Phone!,
+            Citizenship!,
+            Messenger!,
+            Language,
+            Consent,
+            Comment,
+            cancellationToken);
+        if (bookingNumber is null)
         {
             AddError(nameof(DepartureId), "booking.error.sold_out");
             return Page();
@@ -93,7 +107,7 @@ public sealed class BookModel(TourCatalog catalog, BookingService bookings, ITex
 
     public int RemainingSeats(string departureId) => bookings.RemainingSeats(departureId);
 
-    public string FormatPrice(int amount)
+    public string FormatPrice(decimal amount)
     {
         var culture = CultureInfo.GetCultureInfo(Language switch
         {
@@ -118,13 +132,13 @@ public sealed class BookModel(TourCatalog catalog, BookingService bookings, ITex
         if (language is not ("ky" or "ru" or "en" or "es" or "fr" or "zh"))
             return false;
 
-        var tour = catalog.Find(slug);
+        var tour = catalog.Find(slug, language);
         if (tour is null)
             return false;
 
         Language = language;
         Tour = tour;
-        Departures = catalog.DeparturesFor(slug);
+        Departures = catalog.DeparturesFor(slug, language);
         return true;
     }
 

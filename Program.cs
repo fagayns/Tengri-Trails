@@ -1,10 +1,36 @@
+using Microsoft.EntityFrameworkCore;
+using TengriTrails.Database;
 using TengriTrails.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<ITextCatalog, JsonTextCatalog>();
-builder.Services.AddSingleton<TourCatalog>();
-builder.Services.AddSingleton<BookingService>();
+builder.Services.AddSingleton<TourSeedCatalog>();
+builder.Services.AddScoped<TourCatalog>();
+builder.Services.AddScoped<BookingService>();
+
+var databaseProvider = builder.Configuration["Database:Provider"] ?? "Sqlite";
+var connectionString = builder.Configuration.GetConnectionString(databaseProvider)
+    ?? throw new InvalidOperationException($"Connection string for database provider '{databaseProvider}' is missing.");
+
+if (databaseProvider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase))
+{
+    var sqlite = new Microsoft.Data.Sqlite.SqliteConnectionStringBuilder(connectionString);
+    if (!Path.IsPathRooted(sqlite.DataSource))
+        sqlite.DataSource = Path.Combine(builder.Environment.ContentRootPath, sqlite.DataSource);
+    builder.Services.AddDbContext<TengriDbContext>(options => options.UseSqlite(sqlite.ToString()));
+}
+else if (databaseProvider.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<TengriDbContext>(options => options.UseNpgsql(connectionString));
+}
+else
+{
+    throw new InvalidOperationException($"Unsupported database provider '{databaseProvider}'. Use Sqlite or Postgres.");
+}
+
+builder.Services.AddHostedService<DatabaseInitializer>();
+builder.Services.AddHostedService<BookingExpirationService>();
 
 var app = builder.Build();
 

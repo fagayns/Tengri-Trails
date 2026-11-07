@@ -80,7 +80,7 @@
   "faq.q4": "如何预留名额？", "faq.a4": "选择出发日期和旅客人数，然后提交表单。目前这只是演示申请，不会收取费用。",
   "faq.q5": "需要准备什么？", "faq.a5": "每段行程都有专属物品清单。分层保暖衣物和舒适的鞋子通常很适合山地旅行。",
   "faq.q6": "提交申请后会发生什么？", "faq.a6": "演示页面会显示申请编号并暂时预留名额。目前尚未接入与旅客的实际联系流程。",
-  "contact.title": "联系我们", "contact.eyebrow": "很乐意为你提供帮助", "contact.intro": "告诉我们你正在计划怎样的旅程。", "contact.heading": "聊聊你的山野之行", "contact.copy": "欢迎咨询日期、兴趣或路线问题。以下联系信息是未来客服团队的占位内容。", "contact.email_label": "电子邮箱", "contact.phone_label": "电话", "contact.phone_value": "上线前补充", "contact.location_label": "所在地", "contact.location_value": "比什凯克，吉尔吉斯斯坦", "contact.placeholder_note": "网站上线前请确认联系地址和工作时间。",
+  "contact.title": "联系我们", "contact.eyebrow": "很乐意为你提供帮助", "contact.intro": "告诉我们你正在计划怎样的旅程。", "contact.heading": "聊聊你的山野之行", "contact.copy": "欢迎咨询日期、兴趣或路线问题。我们可以帮你选择行程并解答疑问。", "contact.email_label": "电子邮箱", "contact.phone_label": "电话", "contact.phone_value": "+996 123 456", "contact.location_label": "所在地", "contact.location_value": "比什凯克，吉尔吉斯斯坦", "contact.placeholder_note": "欢迎通过电子邮件或电话联系我们。",
   "privacy.scope_title": "处理的信息", "privacy.scope_copy": "预订表单用于收集处理申请所需的信息。在此演示版本中，会话结束后不会保留申请及旅客信息。", "privacy.rights_title": "你的权利", "privacy.rights_copy": "正式上线前需说明数据负责人、保存期限，以及申请查阅、更正或删除信息的方法。完整政策将在法律审核后发布。",
   "terms.title": "政策与条款", "terms.eyebrow": "旅客须知", "terms.intro": "行程预订和参与条款。", "terms.booking_title": "申请与预订", "terms.booking_copy": "在演示网站提交表单并不代表购买已确认。名额和预订需要由行程组织方确认。", "terms.payment_title": "付款", "terms.payment_copy": "本网站不收取费用。行程计划审核并获批准后，价格和服务内容可能调整。", "terms.changes_title": "变更与责任", "terms.changes_copy": "最终取消、路线调整和责任条款将在组织方批准后发布。", "terms.template_notice": "此处为草案，并非经法律审核的正式条款。商业上线前必须完成法律审核。",
   "detail.coordinates": "吉尔吉斯斯坦 · 天山"

@@ -4,15 +4,15 @@
 @{
     ViewData["Language"] = Model.Language;
     ViewData["LanguageSuffix"] = $"/tours/{Model.Tour.Slug}";
-    ViewData["Title"] = T.Get(Model.Tour.NameKey, Model.Language);
+    ViewData["Title"] = Model.Tour.Name;
 }
 <article class="tour-detail">
     <section class="detail-cover" style="--cover-image: url('@Model.Tour.ImageUrl')">
         <div class="detail-cover-shade"></div>
         <div class="detail-cover-content">
             <a class="back-link" href="/@Model.Language/tours"><span aria-hidden="true">←</span>@T.Get("detail.back", Model.Language)</a>
-            <p class="eyebrow eyebrow-light"><span></span>@T.Get(Model.Tour.RegionKey, Model.Language)</p>
-            <h1>@T.Get(Model.Tour.NameKey, Model.Language)</h1>
+            <p class="eyebrow eyebrow-light"><span></span>@Model.Tour.RegionName</p>
+            <h1>@Model.Tour.Name</h1>
             <p>@T.Get("tour.days", Model.Language, Model.Tour.Days) <i>·</i> @T.Get("detail.small_group", Model.Language)</p>
         </div>
         <span class="detail-coordinates">@T.Get("detail.coordinates", Model.Language)</span>
@@ -20,7 +20,7 @@
 
     <section class="tour-gallery section" aria-label="@T.Get("detail.gallery", Model.Language)">
         <button class="gallery-main" type="button" data-gallery-open aria-label="@T.Get("detail.open_gallery", Model.Language)">
-            <img src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" loading="lazy" decoding="async" data-gallery-current />
+            <img src="@Model.Tour.GalleryImageUrls[0]" alt="@Model.Tour.Name" loading="lazy" decoding="async" data-gallery-current />
             <span class="gallery-open-label">@T.Get("detail.open_gallery", Model.Language)<span aria-hidden="true">⤢</span></span>
         </button>
         <div class="gallery-thumbnails" role="group" aria-label="@T.Get("detail.gallery_thumbnails", Model.Language)">
@@ -41,7 +41,7 @@
             <button type="button" data-gallery-close aria-label="@T.Get("detail.close_gallery", Model.Language)">×</button>
         </div>
         <button class="gallery-dialog-arrow gallery-previous" type="button" data-gallery-previous aria-label="@T.Get("detail.previous_photo", Model.Language)">‹</button>
-        <img class="gallery-dialog-image" src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" loading="lazy" decoding="async" data-gallery-dialog-image />
+        <img class="gallery-dialog-image" src="@Model.Tour.GalleryImageUrls[0]" alt="@Model.Tour.Name" loading="lazy" decoding="async" data-gallery-dialog-image />
         <button class="gallery-dialog-arrow gallery-next" type="button" data-gallery-next aria-label="@T.Get("detail.next_photo", Model.Language)">›</button>
     </dialog>
 
@@ -49,7 +49,7 @@
         <div class="detail-copy">
             <p class="eyebrow"><span></span>@T.Get("detail.about_eyebrow", Model.Language)</p>
             <h2>@T.Get("detail.about_title", Model.Language)</h2>
-            <p class="detail-description">@T.Get(Model.Tour.DescriptionKey, Model.Language)</p>
+            <p class="detail-description">@Model.Tour.Description</p>
             <div class="detail-facts">
                 <div><span>@T.Get("detail.duration", Model.Language)</span><strong>@T.Get("tour.days", Model.Language, Model.Tour.Days)</strong></div>
                 <div><span>@T.Get("detail.difficulty", Model.Language)</span><strong>@T.Get(Model.DifficultyLabelKey(Model.Difficulty), Model.Language)</strong></div>
@@ -64,7 +64,7 @@
                     {
                         <li>
                             <span class="itinerary-day">@T.Get("itinerary.day", Model.Language, day.Day)</span>
-                            <div><h3>@T.Get(day.DescriptionKey, Model.Language)</h3></div>
+                            <div><h3>@day.DescriptionKey</h3></div>
                         </li>
                     }
                 </ol>
@@ -76,7 +76,7 @@
                     <ul class="detail-list">
                         @foreach (var item in Model.Tour.IncludedKeys)
                         {
-                            <li>@T.Get(item, Model.Language)</li>
+                            <li>@item</li>
                         }
                     </ul>
                 </section>
@@ -85,7 +85,7 @@
                     <ul class="detail-list detail-list-excluded">
                         @foreach (var item in Model.Tour.ExcludedKeys)
                         {
-                            <li>@T.Get(item, Model.Language)</li>
+                            <li>@item</li>
                         }
                     </ul>
                 </section>
@@ -97,7 +97,7 @@
                 <ul class="packing-list">
                     @foreach (var item in Model.Tour.PackingKeys)
                     {
-                        <li>@T.Get(item, Model.Language)</li>
+                        <li>@item</li>
                     }
                 </ul>
             </section>
@@ -119,7 +119,7 @@
                             <span>@T.Get(departure.MeetingPlaceKey, Model.Language)</span>
                             <span>@T.Get("detail.seats_left", Model.Language, remainingSeats)</span>
                         </div>
-                        <strong class="departure-price">@Model.FormatPrice(Model.Tour.Price)</strong>
+                        <strong class="departure-price">@Model.FormatPrice(departure.PricePerPersonKgs)</strong>
                         @if (remainingSeats > 0)
                         {
                             <a class="button button-accent departure-book" href="/@Model.Language/tours/@Model.Tour.Slug/book?departureId=@Uri.EscapeDataString(departure.Id)">
@@ -149,12 +149,12 @@
                 {
                     <a class="tour-card" href="/@Model.Language/tours/@tour.Slug">
                         <div class="tour-image-wrap">
-                            <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
-                            <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
+                            <img src="@tour.ImageUrl" alt="@tour.Name" loading="lazy" decoding="async" />
+                            <span class="tour-region">@tour.RegionName</span>
                             <span class="image-arrow" aria-hidden="true">↗</span>
                         </div>
                         <div class="tour-card-info">
-                            <div><h3>@T.Get(tour.NameKey, Model.Language)</h3><span>@T.Get("tour.days", Model.Language, tour.Days)</span></div>
+                            <div><h3>@tour.Name</h3><span>@T.Get("tour.days", Model.Language, tour.Days)</span></div>
                             <p>@T.Get("tour.from", Model.Language) <strong>@Model.FormatPrice(tour.Price)</strong></p>
                         </div>
                     </a>

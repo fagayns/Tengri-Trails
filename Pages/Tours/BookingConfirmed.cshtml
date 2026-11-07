@@ -16,7 +16,7 @@
             <span>@T.Get("booking.number", Model.Language)</span>
             <strong>@Model.BookingNumber</strong>
         </div>
-        <p class="confirmation-tour">@T.Get(Model.TourNameKey, Model.Language)</p>
+        <p class="confirmation-tour">@Model.TourName</p>
         <a class="button button-forest" href="/@Model.Language/tours/@Model.TourSlug">@T.Get("booking.back_to_tour", Model.Language)<span aria-hidden="true">↗</span></a>
         <p class="booking-summary-note">@T.Get("booking.no_payment", Model.Language)</p>
     </div>
