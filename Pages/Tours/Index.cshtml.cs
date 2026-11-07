@@ -10,8 +10,10 @@ public sealed class IndexModel(TourCatalog catalog, ITextCatalog text) : PageMod
 {
     private static readonly (string Key, string Value)[] RegionOptions =
     [
+        ("region.bishkek", "bishkek"), ("region.chuy", "chuy"),
         ("region.issyk_kul", "issyk-kul"), ("region.naryn", "naryn"),
-        ("region.osh", "osh"), ("region.chuy", "chuy"), ("region.jalal_abad", "jalal-abad")
+        ("region.talas", "talas"), ("region.jalal_abad", "jalal-abad"),
+        ("region.osh", "osh"), ("region.batken", "batken")
     ];
 
     private static readonly (string Key, string Value)[] TypeOptions =

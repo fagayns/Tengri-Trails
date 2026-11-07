@@ -1,0 +1,32 @@
+@page "/{lang}/regions"
+@model TengriTrails.Pages.Regions.IndexModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "/regions";
+    ViewData["Title"] = T.Get("regions.title", Model.Language);
+}
+<section class="page-hero regions-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get("regions.eyebrow", Model.Language)</p>
+        <h1>@T.Get("regions.title", Model.Language)</h1>
+        <p>@T.Get("regions.intro", Model.Language)</p>
+    </div>
+</section>
+<section class="section regions-directory">
+    <div class="region-card-grid">
+        @foreach (var region in Model.Regions)
+        {
+            <a class="region-card" href="/@Model.Language/tours?region=@region.Slug">
+                <img src="@region.ImageUrl" alt="@T.Get(region.NameKey, Model.Language)" loading="lazy" />
+                <span class="region-card-shade"></span>
+                <span class="region-card-content">
+                    <strong>@T.Get(region.NameKey, Model.Language)</strong>
+                    <span>@T.Get(region.DescriptionKey, Model.Language)</span>
+                    <span class="region-card-link">@T.Get("regions.explore", Model.Language)<b aria-hidden="true">↗</b></span>
+                </span>
+            </a>
+        }
+    </div>
+</section>

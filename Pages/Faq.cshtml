@@ -1,0 +1,27 @@
+@page "/{lang}/faq"
+@model TengriTrails.Pages.ContentPageModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "/faq";
+    ViewData["Title"] = T.Get("faq.title", Model.Language);
+}
+<section class="page-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get("faq.eyebrow", Model.Language)</p>
+        <h1>@T.Get("faq.title", Model.Language)</h1>
+        <p>@T.Get("faq.intro", Model.Language)</p>
+    </div>
+</section>
+<section class="section faq-section">
+    <div class="faq-list">
+        @for (var index = 1; index <= 6; index++)
+        {
+            <details class="faq-item">
+                <summary>@T.Get($"faq.q{index}", Model.Language)<span aria-hidden="true">+</span></summary>
+                <p>@T.Get($"faq.a{index}", Model.Language)</p>
+            </details>
+        }
+    </div>
+</section>

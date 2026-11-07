@@ -1,0 +1,25 @@
+@page "/{lang}/about"
+@model TengriTrails.Pages.ContentPageModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "/about";
+    ViewData["Title"] = T.Get("about.title", Model.Language);
+}
+<section class="page-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get("about.eyebrow", Model.Language)</p>
+        <h1>@T.Get("about.title", Model.Language)</h1>
+        <p>@T.Get("about.intro", Model.Language)</p>
+    </div>
+</section>
+<section class="section editorial-page">
+    <div class="editorial-copy">
+        <h2>@T.Get("about.guides_title", Model.Language)</h2>
+        <p>@T.Get("about.guides_copy", Model.Language)</p>
+        <h2>@T.Get("about.approach_title", Model.Language)</h2>
+        <p>@T.Get("about.approach_copy", Model.Language)</p>
+        <a class="text-link" href="/@Model.Language/tours">@T.Get("about.explore_tours", Model.Language)<span aria-hidden="true">↗</span></a>
+    </div>
+</section>

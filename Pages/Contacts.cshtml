@@ -1,0 +1,28 @@
+@page "/{lang}/contacts"
+@model TengriTrails.Pages.ContentPageModel
+@inject ITextCatalog T
+@{
+    ViewData["Language"] = Model.Language;
+    ViewData["LanguageSuffix"] = "/contacts";
+    ViewData["Title"] = T.Get("contact.title", Model.Language);
+}
+<section class="page-hero">
+    <div class="page-hero-image"></div>
+    <div class="page-hero-content">
+        <p class="eyebrow eyebrow-light"><span></span>@T.Get("contact.eyebrow", Model.Language)</p>
+        <h1>@T.Get("contact.title", Model.Language)</h1>
+        <p>@T.Get("contact.intro", Model.Language)</p>
+    </div>
+</section>
+<section class="section contact-section">
+    <div class="contact-copy">
+        <h2>@T.Get("contact.heading", Model.Language)</h2>
+        <p>@T.Get("contact.copy", Model.Language)</p>
+    </div>
+    <div class="contact-details">
+        <div><span>@T.Get("contact.email_label", Model.Language)</span><a href="mailto:hello@tengritrails.com">hello@tengritrails.com</a></div>
+        <div><span>@T.Get("contact.phone_label", Model.Language)</span><strong>@T.Get("contact.phone_value", Model.Language)</strong></div>
+        <div><span>@T.Get("contact.location_label", Model.Language)</span><strong>@T.Get("contact.location_value", Model.Language)</strong></div>
+        <p>@T.Get("contact.placeholder_note", Model.Language)</p>
+    </div>
+</section>
