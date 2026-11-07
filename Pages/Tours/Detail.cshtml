@@ -20,7 +20,7 @@
 
     <section class="tour-gallery section" aria-label="@T.Get("detail.gallery", Model.Language)">
         <button class="gallery-main" type="button" data-gallery-open aria-label="@T.Get("detail.open_gallery", Model.Language)">
-            <img src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" data-gallery-current />
+            <img src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" loading="lazy" decoding="async" data-gallery-current />
             <span class="gallery-open-label">@T.Get("detail.open_gallery", Model.Language)<span aria-hidden="true">⤢</span></span>
         </button>
         <div class="gallery-thumbnails" role="group" aria-label="@T.Get("detail.gallery_thumbnails", Model.Language)">
@@ -29,7 +29,7 @@
                 <button class="gallery-thumbnail @(index == 0 ? "is-active" : "")" type="button"
                         data-gallery-thumbnail data-index="@index" data-src="@Model.Tour.GalleryImageUrls[index]"
                         aria-label="@T.Get("detail.gallery_photo", Model.Language, index + 1)" aria-current="@(index == 0 ? "true" : null)">
-                    <img src="@Model.Tour.GalleryImageUrls[index]" alt="" loading="lazy" />
+                    <img src="@Model.Tour.GalleryImageUrls[index]" alt="" loading="lazy" decoding="async" />
                 </button>
             }
         </div>
@@ -41,7 +41,7 @@
             <button type="button" data-gallery-close aria-label="@T.Get("detail.close_gallery", Model.Language)">×</button>
         </div>
         <button class="gallery-dialog-arrow gallery-previous" type="button" data-gallery-previous aria-label="@T.Get("detail.previous_photo", Model.Language)">‹</button>
-        <img class="gallery-dialog-image" src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" data-gallery-dialog-image />
+        <img class="gallery-dialog-image" src="@Model.Tour.GalleryImageUrls[0]" alt="@T.Get(Model.Tour.NameKey, Model.Language)" loading="lazy" decoding="async" data-gallery-dialog-image />
         <button class="gallery-dialog-arrow gallery-next" type="button" data-gallery-next aria-label="@T.Get("detail.next_photo", Model.Language)">›</button>
     </dialog>
 
@@ -149,7 +149,7 @@
                 {
                     <a class="tour-card" href="/@Model.Language/tours/@tour.Slug">
                         <div class="tour-image-wrap">
-                            <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" />
+                            <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
                             <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
                             <span class="image-arrow" aria-hidden="true">↗</span>
                         </div>

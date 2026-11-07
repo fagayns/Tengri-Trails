@@ -104,7 +104,7 @@
         </div>
 
         <aside class="booking-summary">
-            <img src="@Model.Tour.ImageUrl" alt="@T.Get(Model.Tour.NameKey, Model.Language)" />
+            <img src="@Model.Tour.ImageUrl" alt="@T.Get(Model.Tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
             <p class="eyebrow"><span></span>@T.Get("booking.summary", Model.Language)</p>
             <h2>@T.Get(Model.Tour.NameKey, Model.Language)</h2>
             <p class="booking-summary-region">@T.Get(Model.Tour.RegionKey, Model.Language) · @T.Get("tour.days", Model.Language, Model.Tour.Days)</p>

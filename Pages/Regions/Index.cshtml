@@ -19,7 +19,7 @@
         @foreach (var region in Model.Regions)
         {
             <a class="region-card" href="/@Model.Language/tours?region=@region.Slug">
-                <img src="@region.ImageUrl" alt="@T.Get(region.NameKey, Model.Language)" loading="lazy" />
+                <img src="@region.ImageUrl" alt="@T.Get(region.NameKey, Model.Language)" loading="lazy" decoding="async" />
                 <span class="region-card-shade"></span>
                 <span class="region-card-content">
                     <strong>@T.Get(region.NameKey, Model.Language)</strong>

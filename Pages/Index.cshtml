@@ -62,7 +62,7 @@
         {
             <a class="tour-card" href="/@Model.Language/tours/@tour.Slug">
                 <div class="tour-image-wrap">
-                    <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" />
+                    <img src="@tour.ImageUrl" alt="@T.Get(tour.NameKey, Model.Language)" loading="lazy" decoding="async" />
                     <span class="tour-region">@T.Get(tour.RegionKey, Model.Language)</span>
                     <span class="image-arrow" aria-hidden="true">↗</span>
                 </div>

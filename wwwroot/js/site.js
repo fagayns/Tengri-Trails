@@ -8,6 +8,12 @@
             menuButton.setAttribute("aria-expanded", String(!isOpen));
             navigation.classList.toggle("is-open", !isOpen);
         });
+        navigation.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape" || menuButton.getAttribute("aria-expanded") !== "true") return;
+            menuButton.setAttribute("aria-expanded", "false");
+            navigation.classList.remove("is-open");
+            menuButton.focus();
+        });
     }
 
     document.querySelectorAll(".language-link").forEach((link) => {
@@ -20,7 +26,7 @@
     });
 
     const hero = document.querySelector(".hero");
-    if (hero && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (hero && !window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 760px)").matches) {
         const layers = [
             [".mountain-far", 0.035],
             [".mountain-mid", 0.065],
